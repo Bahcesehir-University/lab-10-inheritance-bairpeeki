@@ -10,7 +10,9 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
+using namespace std;
 // ================================================================
 // CLASS DEFINITIONS
 // ================================================================
@@ -37,12 +39,28 @@
 
 class Vehicle {
 protected:
+   
+    string make; 
+    int year;        
+    double fuelLevel; 
     // TODO: declare protected data members
     //       std::string make
     //       int year
     //       double fuelLevel
 
 public:
+   
+    Vehicle(string make, int year, double fuelLevel);
+   
+   string getMake() const;
+   int getYear() const;
+   double getFuelLevel() const;
+   
+    void refuel(double amount);
+      
+    virtual string describe() const = 0;
+   
+   virtual ~Vehicle() = default;
     // TODO: declare constructor
     //       Vehicle(std::string make, int year, double fuelLevel)
 
@@ -76,8 +94,13 @@ public:
 class Car : public Vehicle {
 private:
     // TODO: int numDoors
-
+int numDoors;
 public:
+Car(string make, int year, double fuelLevel,int numDoors);
+int getNumDoors() const;
+
+ string describe() const override;
+
     // TODO: Constructor(make, year, fuelLevel, numDoors)
 
     // TODO: getNumDoors()
@@ -104,8 +127,16 @@ public:
 class Truck : public Vehicle {
 private:
     // TODO: double payloadTons
-
+double payloadTons;
 public:
+    
+    Truck(string make, int year, double fuelLevel,double payloadTons);
+    
+    
+    
+ double getPayloadTons() const;
+    
+     string describe() const override;
     // TODO: Constructor(make, year, fuelLevel, payloadTons)
 
     // TODO: getPayloadTons()
@@ -122,35 +153,54 @@ public:
 // ----------------------------------------------------------------
 
 // TODO: Implement Vehicle constructor
-
+ Vehicle::Vehicle(string make, int year, double fuelLevel): make(make) ,year(year),fuelLevel(fuelLevel){}
 // TODO: Implement getMake(), getYear(), getFuelLevel()
+std::string Vehicle::getMake() const{return make;}
+   int Vehicle::getYear() const{return year;}
+   double Vehicle::getFuelLevel() const{return fuelLevel;}
 
 // TODO: Implement refuel(double amount)
 //       Rules:
 //         - Ignore if amount <= 0
 //         - fuelLevel += amount
 //         - If fuelLevel > 100.0, clamp to 100.0
-
+void Vehicle::refuel(double amount){
+    if(amount < 0) return;
+    fuelLevel += amount;
+    if(fuelLevel>100.0) fuelLevel= 100.0;
+}
 // ----------------------------------------------------------------
 // Car member function implementations
 // ----------------------------------------------------------------
-
+Car::Car(string make, int year, double fuelLevel,int numDoors): Vehicle(make,year,fuelLevel),numDoors(numDoors){}
 // TODO: Implement Car constructor (chain to Vehicle)
 
 // TODO: Implement getNumDoors()
-
+int Car::getNumDoors() const {return numDoors;}
 // TODO: Implement describe()
 //       Hint: use std::ostringstream for formatted decimal output
-
+string Car::describe() const {
+    std::ostringstream oss;
+    oss  << "Car" << make <<" ( "<< year << "),"<<numDoors<<"doors, fuel: "<<
+    fuelLevel << "%";
+    return oss.str();
+}
 // ----------------------------------------------------------------
 // Truck member function implementations
 // ----------------------------------------------------------------
 
 // TODO: Implement Truck constructor (chain to Vehicle)
-
+Truck::Truck(string make, int year, double fuelLevel,double payloadTons) : Vehicle(make,year,fuelLevel),payloadTons(payloadTons){}
+    
 // TODO: Implement getPayloadTons()
-
+double Truck::getPayloadTons()const {return payloadTons;}
 // TODO: Implement describe()
+string Truck::describe() const {
+    std::ostringstream oss;
+    oss << "Truck" << make <<" ( "<< year << "),"<<"Payload:"<<payloadTons<<"t,fuel: "<<
+    fuelLevel << "%";
+    return oss.str();
+}
 
 // ================================================================
 // MAIN
