@@ -197,7 +197,7 @@ double Truck::getPayloadTons()const {return payloadTons;}
 // TODO: Implement describe()
 string Truck::describe() const {
     std::ostringstream oss;
-    oss << "Truck" << make <<" ( "<< year << "),"<<"Payload:"<<payloadTons<<"t,fuel: "<<
+    oss << "Truck" << make <<" ( "<< year << "),"<<"payload:"<<payloadTons<<"t,fuel: "<<
     fuelLevel << "%";
     return oss.str();
 }
